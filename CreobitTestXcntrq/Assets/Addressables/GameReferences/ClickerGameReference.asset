@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38cc2ec4dbef2fd4abf3500d64c162de, type: 3}
+  m_Name: ClickerGameReference
+  m_EditorClassIdentifier: 
+  _id: ClickerGameID
+  _name: Clicker
+  _scene:
+    m_AssetGUID: 732d59a0aa6fa1e4abac14eb6fa1e98f
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
