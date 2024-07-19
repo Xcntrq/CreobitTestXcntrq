@@ -5,11 +5,13 @@ namespace Launcher
 
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Button))]
-    public class QuitButton : MonoBehaviour
+    public class RefreshButton : MonoBehaviour
     {
+        [SerializeField] private GameLauncher _gameLauncher;
+
         private void Awake()
         {
-            GetComponent<Button>().onClick.AddListener(() => Application.Quit());
+            GetComponent<Button>().onClick.AddListener(() => _gameLauncher.Refresh());
         }
     }
 }

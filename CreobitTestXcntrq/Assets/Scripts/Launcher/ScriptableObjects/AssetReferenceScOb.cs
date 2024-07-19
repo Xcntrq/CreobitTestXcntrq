@@ -1,4 +1,4 @@
-namespace Namespace
+namespace Launcher
 {
     using System;
     using UnityEngine;

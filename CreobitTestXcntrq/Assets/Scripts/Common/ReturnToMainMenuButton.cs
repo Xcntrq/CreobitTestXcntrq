@@ -1,4 +1,4 @@
-namespace Namespace
+namespace Launcher
 {
     using UnityEngine;
     using UnityEngine.SceneManagement;

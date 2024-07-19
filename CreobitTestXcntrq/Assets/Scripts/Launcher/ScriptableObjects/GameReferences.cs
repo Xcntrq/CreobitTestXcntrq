@@ -1,4 +1,4 @@
-namespace Namespace
+namespace Launcher
 {
     using System.Collections.Generic;
     using UnityEngine;

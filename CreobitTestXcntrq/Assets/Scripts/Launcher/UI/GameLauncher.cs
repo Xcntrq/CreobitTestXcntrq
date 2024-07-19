@@ -1,4 +1,4 @@
-namespace Namespace
+namespace Launcher
 {
 #if UNITY_EDITOR
     using UnityEditor;
@@ -13,6 +13,7 @@ namespace Namespace
     using System.Collections.Generic;
     using UnityEngine.ResourceManagement.ResourceProviders;
     using System.Linq;
+    using UnityEngine.SceneManagement;
 
     [DisallowMultipleComponent]
     public class GameLauncher : MonoBehaviour
@@ -90,6 +91,15 @@ namespace Namespace
             };
         }
 
+        public void Refresh() => StartCoroutine(ReloadAfterUpdate());
+
+        private IEnumerator ReloadAfterUpdate()
+        {
+            BlockInput("Refreshing...");
+            yield return Addressables.UpdateCatalogs(null, true);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
         private void Awake()
         {
             bool isReadyForWork = _gameReferences != null;
@@ -112,7 +122,7 @@ namespace Namespace
 
         private IEnumerator LoadReferences()
         {
-            BlockInput("Loading...");
+            BlockInput("Loading available games...");
             ReleaseHandle(_gameReferencesHandle);
 
             _gameReferencesHandle = Addressables.LoadAssetAsync<GameReferences>(_gameReferences);
@@ -148,7 +158,7 @@ namespace Namespace
 
         private IEnumerator UpdateSizes()
         {
-            BlockInput("Loading...");
+            BlockInput("Checking for updates...");
 
             _sizes?.Clear();
             _sizes ??= new();
