@@ -1,10 +1,10 @@
-namespace Adventure
+namespace AdventureGame
 {
     using System;
     using UnityEngine;
 
     [Serializable]
-    public class GameData
+    public class LevelData
     {
         private float _timeElapsed = 0f;
         private float _timeOfVictory = 0f;

@@ -1,4 +1,4 @@
-namespace Adventure
+namespace AdventureGame
 {
     using UnityEngine;
 
@@ -6,9 +6,9 @@ namespace Adventure
     [RequireComponent(typeof(Collider))]
     public class FinishTrigger : MonoBehaviour
     {
-        private IGame Game => _game ??= (GetComponentInParent<IGame>() ?? _nullGame);
-        private readonly IGame _nullGame = new NullGame();
-        private IGame _game = null;
+        private ILevel Level => _level ??= (GetComponentInParent<ILevel>() ?? _nullLevel);
+        private readonly ILevel _nullLevel = new NullLevel();
+        private ILevel _level = null;
 
         private void OnTriggerEnter(Collider other)
         {
@@ -16,7 +16,7 @@ namespace Adventure
             if (player != null)
             {
                 player.Stop();
-                Game.TriggerVictory();
+                Level.TriggerVictory();
             }
         }
     }

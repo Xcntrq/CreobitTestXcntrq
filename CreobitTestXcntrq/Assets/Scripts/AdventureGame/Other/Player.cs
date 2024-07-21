@@ -1,4 +1,4 @@
-namespace Adventure
+namespace AdventureGame
 {
     using UnityEngine;
 
@@ -10,9 +10,9 @@ namespace Adventure
         [SerializeField] private float _moveSpeed;
         [SerializeField] private float _turnSpeed;
 
-        private IGame Game => _game ??= (GetComponentInParent<IGame>() ?? _nullGame);
-        private readonly IGame _nullGame = new NullGame();
-        private IGame _game = null;
+        private ILevel Level => _level ??= (GetComponentInParent<ILevel>() ?? _nullLevel);
+        private readonly ILevel _nullLevel = new NullLevel();
+        private ILevel _level = null;
 
         private Rigidbody _rb;
         private Animator _animator;
@@ -32,7 +32,7 @@ namespace Adventure
             _isStopped = false;
             _rb = GetComponent<Rigidbody>();
             _animator = GetComponent<Animator>();
-            Game.RegisterPlayer(transform);
+            Level.RegisterPlayer(transform);
         }
 
         private void FixedUpdate()

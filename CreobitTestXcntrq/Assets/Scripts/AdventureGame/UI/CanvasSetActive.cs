@@ -1,4 +1,4 @@
-namespace Adventure
+namespace AdventureGame
 {
     using UnityEngine;
 
@@ -14,14 +14,14 @@ namespace Adventure
 
         [SerializeField] private ActivityType _activityType;
 
-        private IGame Game => _game ??= (GetComponentInParent<IGame>() ?? _nullGame);
-        private readonly IGame _nullGame = new NullGame();
-        private IGame _game = null;
+        private ILevel Level => _level ??= (GetComponentInParent<ILevel>() ?? _nullLevel);
+        private readonly ILevel _nullLevel = new NullLevel();
+        private ILevel _level = null;
 
         private void Awake()
         {
-            Game.GameStarted += Game_GameStarted;
-            Game.VictoryTriggered += Game_VictoryTriggered;
+            Level.LevelStarted += Game_GameStarted;
+            Level.VictoryTriggered += Game_VictoryTriggered;
         }
 
         private void Game_GameStarted()
@@ -36,8 +36,8 @@ namespace Adventure
 
         private void OnDestroy()
         {
-            Game.GameStarted -= Game_GameStarted;
-            Game.VictoryTriggered -= Game_VictoryTriggered;
+            Level.LevelStarted -= Game_GameStarted;
+            Level.VictoryTriggered -= Game_VictoryTriggered;
         }
     }
 }
