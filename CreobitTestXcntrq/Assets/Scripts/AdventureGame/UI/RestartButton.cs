@@ -1,4 +1,4 @@
-namespace Adventure
+namespace AdventureGame
 {
     using UnityEngine;
     using UnityEngine.UI;
@@ -7,13 +7,13 @@ namespace Adventure
     [RequireComponent(typeof(Button))]
     public class RestartButton : MonoBehaviour
     {
-        private IGame Game => _game ??= (GetComponentInParent<IGame>() ?? _nullGame);
-        private readonly IGame _nullGame = new NullGame();
-        private IGame _game = null;
+        private ILevel Level => _level ??= (GetComponentInParent<ILevel>() ?? _nullLevel);
+        private readonly ILevel _nullLevel = new NullLevel();
+        private ILevel _level = null;
 
         private void Awake()
         {
-            GetComponent<Button>().onClick.AddListener(() => Game.Restart());
+            GetComponent<Button>().onClick.AddListener(() => Level.ResetLevel());
         }
     }
 }
