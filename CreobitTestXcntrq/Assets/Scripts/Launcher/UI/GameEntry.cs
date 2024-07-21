@@ -1,4 +1,4 @@
-namespace Launcher
+namespace GameLauncher
 {
     using TMPro;
     using UnityEngine.UI;

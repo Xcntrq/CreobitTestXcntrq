@@ -1,4 +1,4 @@
-namespace Launcher
+namespace GameLauncher
 {
 #if UNITY_EDITOR
     using UnityEditor;
@@ -12,7 +12,6 @@ namespace Launcher
     using System;
     using System.Collections.Generic;
     using UnityEngine.ResourceManagement.ResourceProviders;
-    using System.Linq;
     using UnityEngine.SceneManagement;
 
     [DisallowMultipleComponent]
@@ -49,45 +48,37 @@ namespace Launcher
         public void PlayGame(GameReference gameReference)
         {
             BlockInput($"Launching {gameReference.Name}...");
-
             Addressables.LoadSceneAsync(gameReference.Scene).Completed += (AsyncOperationHandle<SceneInstance> handle) =>
             {
-                if (handle.Status == AsyncOperationStatus.Failed)
-                {
-                    UnblockInput($"Error launching {gameReference.Name}");
-                    return;
-                }
+                string msg = (handle.Status != AsyncOperationStatus.Succeeded) ? $"Error launching {gameReference.Name}" : string.Empty;
+                ReleaseHandle(handle);
+                UnblockInput(msg);
             };
         }
 
         public void LoadGame(GameReference gameReference)
         {
             BlockInput($"Downloading {gameReference.Name}...");
-
-            Addressables.LoadAssetAsync<SceneInstance>(gameReference.Scene).Completed += (AsyncOperationHandle<SceneInstance> handle) =>
+            Addressables.DownloadDependenciesAsync(gameReference.Scene, false).Completed += (AsyncOperationHandle handle) =>
             {
-                UnblockInput();
+                string msg = (handle.Status != AsyncOperationStatus.Succeeded) ? $"Error downloading {gameReference.Name}" : string.Empty;
+                float delay = (handle.Status != AsyncOperationStatus.Succeeded) ? 0.5f : 0f;
                 ReleaseHandle(handle);
-                StartCoroutine(UpdateSizes());
+                UnblockInput(msg);
+                StartCoroutine(UpdateSizes(delay));
             };
         }
 
         public void UnloadGame(GameReference gameReference)
         {
             BlockInput($"Unloading {gameReference.Name}...");
-
             Addressables.ClearDependencyCacheAsync(gameReference.Scene, false).Completed += (AsyncOperationHandle<bool> handle) =>
             {
-                if (handle.Status == AsyncOperationStatus.Failed)
-                {
-                    ReleaseHandle(handle);
-                    UnblockInput($"Error unloading {gameReference.Name}");
-                    return;
-                }
-
-                UnblockInput();
+                string msg = (handle.Status != AsyncOperationStatus.Succeeded) ? $"Error unloading {gameReference.Name}" : string.Empty;
+                float delay = (handle.Status != AsyncOperationStatus.Succeeded) ? 0.5f : 0f;
                 ReleaseHandle(handle);
-                StartCoroutine(UpdateSizes());
+                UnblockInput(msg);
+                StartCoroutine(UpdateSizes(delay));
             };
         }
 
@@ -97,7 +88,7 @@ namespace Launcher
         {
             BlockInput("Refreshing...");
             yield return Addressables.UpdateCatalogs(null, true);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            SceneManager.LoadScene("MainMenu");
         }
 
         private void Awake()
@@ -122,26 +113,19 @@ namespace Launcher
 
         private IEnumerator LoadReferences()
         {
-            BlockInput("Loading available games...");
+            BlockInput("Checking for games...");
             ReleaseHandle(_gameReferencesHandle);
 
             _gameReferencesHandle = Addressables.LoadAssetAsync<GameReferences>(_gameReferences);
             yield return _gameReferencesHandle;
 
-            DestroyChildren();
-            if (_gameReferencesHandle.Status == AsyncOperationStatus.Failed)
+            if (_gameReferencesHandle.Status != AsyncOperationStatus.Succeeded)
             {
                 UnblockInput("Connection error");
                 yield break;
             }
 
-            foreach (GameEntry gameEntry in _gameEntries ?? Enumerable.Empty<GameEntry>())
-            {
-                gameEntry?.Unsub();
-            }
-
-            _gameEntries?.Clear();
-            _gameEntries ??= new();
+            _gameEntries = new();
             foreach (GameReference gameReference in _gameReferencesHandle.Result.List)
             {
                 TextMeshProUGUI tmp = Instantiate(_textPf, _col1);
@@ -152,13 +136,14 @@ namespace Launcher
                 _gameEntries.Add(gameEntry);
             }
 
-            UnblockInput();
+            UnblockInput(string.Empty);
             StartCoroutine(UpdateSizes());
         }
 
-        private IEnumerator UpdateSizes()
+        private IEnumerator UpdateSizes(float delay = 0f)
         {
-            BlockInput("Checking for updates...");
+            BlockInput("Refreshing...");
+            yield return new WaitForSeconds(delay);
 
             _sizes?.Clear();
             _sizes ??= new();
@@ -167,10 +152,10 @@ namespace Launcher
                 AsyncOperationHandle<long> getDownloadSize = Addressables.GetDownloadSizeAsync(gameReference.Scene);
                 yield return getDownloadSize;
 
-                if (getDownloadSize.Status == AsyncOperationStatus.Failed)
+                if (getDownloadSize.Status != AsyncOperationStatus.Succeeded)
                 {
-                    ReleaseHandle(getDownloadSize);
                     UnblockInput("Connection error");
+                    ReleaseHandle(getDownloadSize);
                     yield break;
                 }
 
@@ -179,7 +164,7 @@ namespace Launcher
                 DataChanged?.Invoke();
             }
 
-            UnblockInput();
+            UnblockInput(string.Empty);
         }
 
         private void OnDestroy()
@@ -187,52 +172,15 @@ namespace Launcher
             ReleaseHandle(_gameReferencesHandle);
         }
 
-        private void DestroyChildren()
-        {
-            List<GameObject> children = new();
-            foreach (Transform t in _col1.transform)
-            {
-                children.Add(t.gameObject);
-            }
-
-            foreach (Transform t in _col2.transform)
-            {
-                children.Add(t.gameObject);
-            }
-
-            foreach (Transform t in _col3.transform)
-            {
-                children.Add(t.gameObject);
-            }
-
-            foreach (Transform t in _col4.transform)
-            {
-                children.Add(t.gameObject);
-            }
-
-            for (int i = children.Count - 1; i >= 0; i--)
-            {
-                Destroy(children[i]);
-            }
-        }
-
         private void BlockInput(string text)
         {
             _inputBlocker.SetActive(true);
             _statusTMP.text = text;
-            _statusTMP.gameObject.SetActive(true);
         }
 
         private void UnblockInput(string text)
         {
             _statusTMP.text = text;
-            _statusTMP.gameObject.SetActive(true);
-            _inputBlocker.SetActive(false);
-        }
-
-        private void UnblockInput()
-        {
-            _statusTMP.gameObject.SetActive(false);
             _inputBlocker.SetActive(false);
         }
 
@@ -261,6 +209,14 @@ namespace Launcher
         }
 
         private void ReleaseHandle(AsyncOperationHandle<bool> handle)
+        {
+            if (handle.IsValid())
+            {
+                Addressables.Release(handle);
+            }
+        }
+
+        private void ReleaseHandle(AsyncOperationHandle handle)
         {
             if (handle.IsValid())
             {

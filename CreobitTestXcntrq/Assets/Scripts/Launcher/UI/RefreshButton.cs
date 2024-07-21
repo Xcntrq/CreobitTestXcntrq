@@ -1,4 +1,4 @@
-namespace Launcher
+namespace GameLauncher
 {
     using UnityEngine;
     using UnityEngine.UI;

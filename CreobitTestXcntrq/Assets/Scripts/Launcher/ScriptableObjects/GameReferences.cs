@@ -1,4 +1,4 @@
-namespace Launcher
+namespace GameLauncher
 {
     using System.Collections.Generic;
     using UnityEngine;
