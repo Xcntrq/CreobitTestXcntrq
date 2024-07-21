@@ -1,18 +1,13 @@
-namespace Clicker
+namespace ClickerGame
 {
     using System;
 
     [Serializable]
     public class PlayerData
     {
-        private long _score;
+        private long _score = 0;
 
         public long Score => _score;
-
-        public PlayerData()
-        {
-            _score = 0;
-        }
 
         public void AddOnePoint()
         {

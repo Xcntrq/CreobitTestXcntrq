@@ -1,4 +1,4 @@
-namespace Clicker
+namespace ClickerGame
 {
     using System;
     using System.IO;
@@ -53,8 +53,9 @@ namespace Clicker
             {
                 binaryFormatter.Serialize(fileStream, playerData);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Debug.LogWarning(e.Message);
             }
 
             fileStream.Close();
@@ -72,8 +73,9 @@ namespace Clicker
                     result = playerData;
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Debug.LogWarning(e.Message);
                 result = new();
             }
 

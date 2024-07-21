@@ -1,4 +1,4 @@
-namespace Clicker
+namespace ClickerGame
 {
     using System;
 
