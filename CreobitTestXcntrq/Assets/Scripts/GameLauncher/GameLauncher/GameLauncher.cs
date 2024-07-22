@@ -64,7 +64,7 @@ namespace GameLauncher
             Addressables.DownloadDependenciesAsync(gameReference.Scene, false).Completed += (AsyncOperationHandle handle) =>
             {
                 string msg = (handle.Status != AsyncOperationStatus.Succeeded) ? $"Error downloading {gameReference.Name}" : string.Empty;
-                float delay = (handle.Status != AsyncOperationStatus.Succeeded) ? 0.5f : 0f;
+                float delay = (handle.Status != AsyncOperationStatus.Succeeded) ? 1 : 0;
                 ReleaseHandle(handle);
                 UnblockInput(msg);
                 StartCoroutine(UpdateSizes(delay));
@@ -77,7 +77,7 @@ namespace GameLauncher
             Addressables.ClearDependencyCacheAsync(gameReference.Scene, false).Completed += (AsyncOperationHandle<bool> handle) =>
             {
                 string msg = (handle.Status != AsyncOperationStatus.Succeeded) ? $"Error unloading {gameReference.Name}" : string.Empty;
-                float delay = (handle.Status != AsyncOperationStatus.Succeeded) ? 0.5f : 0f;
+                float delay = (handle.Status != AsyncOperationStatus.Succeeded) ? 1 : 0;
                 ReleaseHandle(handle);
                 UnblockInput(msg);
                 StartCoroutine(UpdateSizes(delay));

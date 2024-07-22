@@ -48,7 +48,7 @@ namespace GameLauncher
             _loadBtn.gameObject.SetActive(true);
             _unloadBtn.gameObject.SetActive(true);
 
-            _tmp.text = _gameLauncher.GetGameSize(_gameReference).ToString();
+            // _tmp.text = _gameLauncher.GetGameSize(_gameReference).ToString();
             bool hasSize = _gameLauncher.GetGameSize(_gameReference) > 0;
 
             _playBtn.interactable = !hasSize;

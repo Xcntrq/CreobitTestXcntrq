@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: b6b4d31f1e2317149ab2f6fef7973617, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 49027db1098a7b840869fe046a8649de, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -37,8 +37,8 @@ RenderSettings:
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
-  m_Sun: {fileID: 7623293671790152965}
-  m_IndirectSpecularColor: {r: 0.12342021, g: 0.28555298, b: 0.60822594, a: 1}
+  m_Sun: {fileID: 0}
+  m_IndirectSpecularColor: {r: 0.30236664, g: 0.4291284, b: 0.61529917, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -246,6 +246,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1532107642335536569, guid: 4cd8daf4ee3a9db44a32b3c8e90a2b55, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2118734225552321985, guid: 4cd8daf4ee3a9db44a32b3c8e90a2b55, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2118734225552321985, guid: 4cd8daf4ee3a9db44a32b3c8e90a2b55, type: 3}
+      propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2585832108476449231, guid: 4cd8daf4ee3a9db44a32b3c8e90a2b55, type: 3}
@@ -524,11 +532,6 @@ PrefabInstance:
 --- !u!1 &7234679359847677584 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4121540944959955071, guid: 4cd8daf4ee3a9db44a32b3c8e90a2b55, type: 3}
-  m_PrefabInstance: {fileID: 2910520797713778232}
-  m_PrefabAsset: {fileID: 0}
---- !u!108 &7623293671790152965 stripped
-Light:
-  m_CorrespondingSourceObject: {fileID: 3017213095103178316, guid: 4cd8daf4ee3a9db44a32b3c8e90a2b55, type: 3}
   m_PrefabInstance: {fileID: 2910520797713778232}
   m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
