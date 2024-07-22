@@ -72,7 +72,7 @@ namespace AdventureGame
                 _levelData.TimeElapsed = 0;
             }
 
-            // If the timer wasn't reset and we load the last session
+            // If the timer wasn't reset, we load the last session
             if (_levelData.TimeElapsed > 0)
             {
                 _player.SetLocalPositionAndRotation(_levelData.PlayerPos, _levelData.PlayerRot);
